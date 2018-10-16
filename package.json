@@ -1,0 +1,60 @@
+{
+  "name": "yoshi",
+  "version": "1.0.0",
+  "description": "A Platformer Game",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder -mwl --ia32 --x64"
+  },
+  "author": {
+    "name": "Vagner Araujo",
+    "email": "vagner@leedigital.com.br"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/araujo921/yoshi.git"
+  },
+  "homepage": "http://darkstar.leedigital.com.br",
+  "license": "GPL-3.0",
+  "devDependencies": {
+    "ajv": "^6.5.4",
+    "electron": "^3.0.4",
+    "electron-builder": "^20.28.4",
+    "electron-builder-squirrel-windows": "^20.28.3",
+    "http-server": "^0.11.1",
+    "install": "^0.12.2",
+    "matter-js": "^0.14.2",
+    "phaser": "^3.14.0"
+  },
+  "build": {
+    "appId": "leedigital.yoshi",
+    "productName": "yoshi",
+    "copyright": "Copyright © 2018 ${author}",
+    "mac": {
+      "category": "public.app-category.games",
+      "target": [
+        "zip"
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb",
+        "zip"
+      ],
+      "category": "public.app-category.games",
+      "maintainer": "${author}",
+      "vendor": "LeeDigital Soluções em internet"
+    },
+    "win": {
+      "target": [
+        "NSIS",
+        "portable",
+        "zip"
+      ]
+    }
+  }
+}
