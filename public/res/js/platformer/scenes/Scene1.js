@@ -5,6 +5,7 @@ import CloseDoor from "../../br/com/leedigital/engine/core/CloseDoor.js";
 import OpenDoor from "../../br/com/leedigital/engine/core/OpenDoor.js";
 import PlatformerScenes from "./PlatformerScenes.js";
 import Score from "../../br/com/leedigital/engine/core/Score.js";
+import AnimatedCoin from "../../br/com/leedigital/engine/core/AnimatedCoin.js";
 
 /**
  *
@@ -25,7 +26,7 @@ export default class Scene1 extends PlatformerScenes {
     this.openDoorObject = new OpenDoor();
     this.openDoorObject.collider = this.collider;
     this.score = new Score();
-    // this.animatedCoin.createFromObjectsLayer = "coinObject";
+    this.animatedCoin = new AnimatedCoin();
     this.levels = {
       currentLevel: 0,
       array: [{
@@ -142,13 +143,13 @@ export default class Scene1 extends PlatformerScenes {
     this.tiledMap.add(this.levelOne);
     this.addEntities(
       this.score,
-      this.player,
       this.coinObject,
-      // this.animatedCoin,
-      this.openDoorObject
+      this.animatedCoin,
+      this.openDoorObject,
+      this.player
     );
     this.camera.follow = this.player;
-    // this.collision.addSprite2CollidesMap(this.player, this.animatedCoin);
+    this.collision.addSprite2CollidesMap(this.player, this.animatedCoin);
     this.collision.addCollisionByCollidesProperty(this.levelOne, "walls", "coins");
     this.collision.addObject2CollidesMap(
       [{
@@ -200,8 +201,6 @@ export default class Scene1 extends PlatformerScenes {
     this.levelSound.one.play();
     this.levelSound.one.loop = true;
     // this.debug();
-    const animatedCoins = this.objectFactory.createAnimatedCoin(this, "coinObject", 985, "goldCoinAnimation");
-    this.collision.addSprite2CollidesMap(this.player, animatedCoins);
   }
 
   update() {

@@ -125,20 +125,20 @@ export default class Collision {
   }
 
   update(scene) {
-    for (let [key, [values]] of this.spriteCollisionMap) {
-      for (let i = 0; i < values.length; i++) {
-        const value = values[i];
+    for (let [key, values] of this.spriteCollisionMap) {
+      for (let value of values) {
         const player = key.spriteObject;
-        const sprite = value.spriteObject;
-        const rect = Phaser.Geom.Rectangle.Intersection(player.getBounds(), sprite.getBounds());
-        if (rect.width > 0 && rect.height > 0) {
-          // sets owner object.
-          // player.ownerObject = key;
-          // sprite.ownerObject = value;
-          value.collider(null, player, sprite);
-          key.collider(null, player, sprite);
-          if (value.isDestroyed()) {
-            values.splice(i, 1);
+        // phaser StaticPhysicsGroup
+        const staticPhysicsGroup = value.spriteObject;
+        const sprites = staticPhysicsGroup.children.entries;
+        for (let sprite of sprites) {
+          const rect = Phaser.Geom.Rectangle.Intersection(player.getBounds(), sprite.getBounds());
+          if (rect.width > 0 && rect.height > 0) {
+            // sets properties in staticPhysicsGroup...
+            // it's used by coin when collected.
+            staticPhysicsGroup.properties = sprite.properties;
+            value.collider(null, player, sprite);
+            key.collider(null, player, sprite);
           }
         }
       }

@@ -8,12 +8,13 @@ export default class ObjectFactory {
 
     /**
      * 
+     * @param {AnimatedCoin} ownerObject 
      * @param {Scene} scene 
      * @param {String} objectLayerName 
      * @param {Number} gid 
      * @param {String} spriteKey 
      */
-    createAnimatedCoin(scene, objectLayerName, gid, spriteKey) {
+    createAnimatedCoin(ownerObject, scene, objectLayerName, gid, spriteKey) {
         const sprites = [];
         const config = {
             key: 'goldCoin',
@@ -26,22 +27,16 @@ export default class ObjectFactory {
             repeat: -1
         };
         scene.anims.create(config);
-        // scene.physics.add.staticGroup()
+        const group = scene.physics.add.staticGroup()
         const coins = scene.tiledMap.tileMap.createFromObjects(objectLayerName, gid, {
             key: objectLayerName
         });
         // console.log(scene.tileMap.tileMap.createFromObjects);
         for (let coin of coins) {
             coin.play("goldCoin");
-            coin.properties = {
-                name: "animated_coin"
-            }
-            const animatedCoin = new AnimatedCoin(coin);
-            scene.addEntities(animatedCoin);
-            animatedCoin.create(scene);
-            sprites.push(animatedCoin);
+            coin.ownerObject = ownerObject;
+            group.add(coin);
         }
-
         const objs = scene.tiledMap.tileMap.filterObjects(objectLayerName, (obj) => obj.gid === gid, scene);
         for (let i = 0, size = objs.length; i < size; i++) {
             const properties = objs[i].properties;
@@ -49,9 +44,10 @@ export default class ObjectFactory {
             for (let property of properties) {
                 propertyObject[property["name"]] = property["value"];
             }
-            sprites[i].spriteObject.properties = propertyObject;
+            group.children.entries[i].properties = propertyObject;
         }
-        return sprites;
+        // console.log(group);
+        return group;
     }
 
 }
